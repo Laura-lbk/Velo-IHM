@@ -1,0 +1,11 @@
+#sidebar {
+  padding: 20px;
+  min-width: 300px;
+  max-width: 300px;
+  min-height: 100vh;
+  background-color: rgb(185, 185, 185);
+}
+
+.rond{
+  border-radius: 50px;
+}
