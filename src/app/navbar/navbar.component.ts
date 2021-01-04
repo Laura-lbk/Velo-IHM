@@ -1,5 +1,8 @@
+import { Injectable, EventEmitter, Output } from '@angular/core';
 import { Component, OnInit, Renderer2,  ViewContainerRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import { DataService } from '../Service/data.service';
 import { DynamicService } from '../Service/dynamic.service';
 
 @Component({
@@ -10,16 +13,43 @@ import { DynamicService } from '../Service/dynamic.service';
 export class NavbarComponent implements OnInit {
 
   faPlus = faPlus;
+  submitted = false;
+  adressForm: FormGroup;
+  @Output() dataSend = new EventEmitter<any>();
 
-  constructor(private renderer: Renderer2,
+  constructor(private formBuilder: FormBuilder,
+    private dataService: DataService,
     private dynamicService: DynamicService,
     private viewContainerRef: ViewContainerRef) {
+
+      this.adressForm = this.formBuilder.group({
+        adresse1: ['', Validators.required],
+        adresse2: ['', Validators.required],
+    });
+
      dynamicService.setRootViewContainerRef(viewContainerRef);
 
   }
 
   ngOnInit(): void {
   }
+
+  onSubmit(){
+    let adresses = [];
+    this.submitted = true;
+        if (this.adressForm.invalid) {
+            return;
+        }
+        for(const valeur in this.adressForm.value){
+          adresses.push(this.adressForm.value[valeur]);
+        }
+        this.dataService.send(adresses);
+    }
+
+  onReset() {
+    this.submitted = false;
+    this.adressForm.reset();
+}
 
   createInput() {
     this.dynamicService.addDynamicComponent();

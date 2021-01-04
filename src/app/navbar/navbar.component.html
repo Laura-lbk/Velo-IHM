@@ -5,14 +5,20 @@
           <h3>Bicyclet'inéraire</h3>
       </div>
       <p>Veuillez choisir votre itinéraire :</p>
+      <form [formGroup]="adressForm" (ngSubmit)="onSubmit()" >
       <label for="adresse1">Départ :</label>
-      <input id="adresse1" type="text" class="form-control" placeholder="Adresse">
+      <input formControlName="adresse1" id="adresse1" type="text" class="form-control" placeholder="Adresse" ngModel>
       <br>
       <button (click)=" createInput()" type="button" class="btn btn-light rond"><fa-icon [icon]="faPlus"></fa-icon> Ajouter une Étape</button>
+      <div id='steps'></div>
       <br>
       <label for="adresse2">Arrivée : </label>
-      <input id="adresse2" type="text" class="form-control" placeholder="Adresse">
+      <input formControlName="adresse2" id="adresse2" type="text" class="form-control" placeholder="Adresse" ngModel>
+      <button class="btn btn-dark" type="submit">Calculer</button>
+    </form>
   </nav>
-
+  <app-map></app-map>
 </div>
+
+
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {GlobalConstantes} from '../Service/global-constantes'
 
 @Component({
   selector: 'app-etape',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EtapeComponent implements OnInit {
 
-  constructor() { }
+  n: number;
+
+  constructor(private constantes: GlobalConstantes) { }
 
   ngOnInit(): void {
+    console.log(this.constantes.nombre);
+    this.constantes.nombre = this.constantes.nombre + 1;
+    this.n = this.constantes.nombre;
+    console.log(this.constantes.nombre)
   }
 
 }
