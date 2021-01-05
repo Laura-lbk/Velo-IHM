@@ -10,6 +10,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EtapeComponent } from './etape/etape.component';
 import {GlobalConstantes} from '../app/Service/global-constantes'
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {GlobalConstantes} from '../app/Service/global-constantes'
     NgbModule,
     FontAwesomeModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClient,
   ],
   providers: [GlobalConstantes],
   bootstrap: [AppComponent],
