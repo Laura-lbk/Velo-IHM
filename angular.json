@@ -122,5 +122,8 @@
       }
     }
   },
-  "defaultProject": "Velo"
+  "defaultProject": "Velo",
+  "cli": {
+    "analytics": "522fca8a-cb64-40f0-89cf-e7b4efbd8719"
+  }
 }

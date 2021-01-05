@@ -3,4 +3,11 @@
   width: calc(100vw - 300px);
   float: right;
   min-height: 85vh;
+  display: flex;
+}
+
+#map-mapbox{ 
+  top: 0; 
+  bottom: 0px; 
+  width: 100%; 
 }
