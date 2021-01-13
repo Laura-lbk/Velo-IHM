@@ -10,26 +10,50 @@ import { WebService } from '../Service/webservice.service'
 })
 export class MapComponent implements OnInit {
 
+  validation:boolean;
   adresses: string[] = [];
   coordoonees: string[] = [];
   map: Mapboxgl.Map;
+  public lat;
+  public lng;
+
   constructor(private dataService: DataService,
     private webservice: WebService) { }
 
   ngOnInit(): void {
+    this.getLocation();
     this.displayMap();
     this.dataService.dataSend.subscribe((data) => {
       this.adresses = data;
       this.dessineTrajet();
-      this.getDirections();
+      this.getDirections(this.adresses);
     });
   }
 
-  async getDirections() {
-    const Adresses = ['31 impasse de la prée Margny les Compiegne', '100 Rue Baudrez 80136 Rivery']
-    const data: any = await this.adressToCoordinates(Adresses);
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position: Position) => {
+        if (position) {
+          console.log("Latitude: " + position.coords.latitude +
+            "Longitude: " + position.coords.longitude);
+          this.lat = position.coords.latitude;
+          this.lng = position.coords.longitude;
+          console.log(this.lat);
+          console.log(this.lat);
+        }
+      },
+        (error: PositionError) => console.log(error));
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  async getDirections(tabAdresses) {
+    const data: any = await this.adressToCoordinates(tabAdresses);
     let coords = [];
     coords = data;
+    this.coordoonees = coords;
+    console.log(coords);
     var coordsString = coords.join(';');
     const accessToken = 'pk.eyJ1IjoibGF1cmEtbGJrIiwiYSI6ImNramtkNmxxczBiNDYyd2xmZDVwM21tMXAifQ.9LF_9VkK1kQVXvVx9gcDUA';
     this.webservice.getData('https://api.mapbox.com/directions/v5/mapbox/cycling/' + coordsString + '?geometries=geojson&access_token=' + accessToken).toPromise().then((datacord) => {
@@ -54,7 +78,15 @@ export class MapComponent implements OnInit {
           'line-opacity': 0.7 //opacité de la ligne
         }
       });
+      this.map.jumpTo({ 'center': coords[0], 'zoom': 7 });
+      this.validation = true;
     })
+  }
+
+  Validation(){
+    console.log('click')
+    this.map.jumpTo({ 'center': this.coordoonees[0], 'zoom': 14 });
+    this.validation = false;
   }
 
   adressToCoordinates(Adresses) {
@@ -72,15 +104,19 @@ export class MapComponent implements OnInit {
     });
   }
 
+
+
   displayMap(): void {
     Mapboxgl.accessToken = 'pk.eyJ1IjoibGF1cmEtbGJrIiwiYSI6ImNramtkNmxxczBiNDYyd2xmZDVwM21tMXAifQ.9LF_9VkK1kQVXvVx9gcDUA';
 
     this.map = new Mapboxgl.Map({
       container: 'map-mapbox', // container id
       style: 'mapbox://styles/mapbox/streets-v11', // style URL
-      center: [4.141056, 44.050022399999996], // starting position [lng, lat]
-      zoom: 5 // starting zoom
+      center: [2.351078, 48.856758], // starting position [lng, lat]
+      zoom: 6 // starting zoom
     });
+
+
 
     var nav = new Mapboxgl.NavigationControl();
     this.map.addControl(nav, 'bottom-right');
